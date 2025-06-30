@@ -1,2 +1,163 @@
 # TessolSampleApp
+# Tessol SDK Usage Manual
+
+## Overview
+
+This manual provides guidance on how to interact with Tessol devices using the `TessolCommandController` API and a reference implementation via the `CommandsActivityPublicSDK`. The SDK allows starting/stopping operations, syncing time, accessing temperature data, and more.
+
+---
+
+## Dependency
+
+To include the Tessol SDK in your project, add the following dependency in your `build.gradle`:
+
+```groovy
+dependencies {
+    implementation "io.github.tessol-in:sdk:1.0.0-rc"
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+```
+
+
+
+## Initialization
+
+### Initialize sdk
+```kotlin
+    TessolSdk.initialize()
+```
+
+### Get an Instance
+
+```kotlin
+val controller = TessolCommandController.getInstance(context)
+```
+
+### Lifecycle Hooks
+
+Call these methods when your component is active/inactive:
+
+```kotlin
+controller.acquire(context)   // Before using any functionality
+controller.release(context)   // After you are done
+```
+
+---
+
+## Device Operations
+
+All operations require a valid `deviceId: String`.
+
+### Start Operation
+
+```kotlin
+val result = controller.startOperation(deviceId)
+```
+
+### Stop Operation
+
+```kotlin
+val result = controller.stopOperation(deviceId)
+```
+
+### Get Device Time
+
+```kotlin
+val timeMillis = controller.getTime(deviceId)
+```
+
+### Set Device Time
+
+```kotlin
+val result = controller.setTime(deviceId, System.currentTimeMillis())
+```
+
+---
+
+## Temperature & Sensor Data
+
+### Get Current Temperature
+
+```kotlin
+val tempRecord = controller.getCurrentTemp(deviceId)
+```
+
+### Retrieve Stored Temperature Records
+
+```kotlin
+val result = controller.saveRecordsFromDevice(deviceId, timeOut = 10000L)
+```
+
+### Upload Data to Server
+
+```kotlin
+val result = controller.uploadData()
+```
+
+---
+
+## Configuration
+
+### Set Data Logging Interval
+
+```kotlin
+val result = controller.setInterval(deviceId, intervalInSeconds = 60)
+```
+
+> Minimum interval should be ≥ 5 seconds.
+
+### Perform Factory Reset
+
+```kotlin
+val result = controller.factoryReset(deviceId)
+```
+
+---
+
+## Get System Info
+
+Returns metadata such as firmware version, data point count, etc.
+
+```kotlin
+val systemInfo = controller.getSystemInfo(deviceId)
+```
+
+---
+
+## Reference UI - `CommandsActivityPublicSDK`
+
+This activity demonstrates how to:
+
+- Display command buttons in a grid
+- Prompt for interval values via dialogs
+- Execute commands with loading indicators
+- Show result dialogs for success/failure messages
+
+### Available Commands
+
+| Command                 | Action Taken                                |
+|-------------------------|---------------------------------------------|
+| SystemInfo              | Fetches and displays system data            |
+| SetInterval             | Opens dialog to set interval                |
+| GetTime                 | Fetches and displays device time            |
+| SetTime                 | Sets device time to current system time     |
+| StartOperation          | Starts the device's operation               |
+| StopOperation           | Stops the device's operation                |
+| GetCurrentTemperature   | Fetches the latest temperature reading      |
+| GetStoredSensorData     | Fetches stored temperature data             |
+| UploadData              | Uploads stored data                         |
+| FactoryReset            | Resets device to factory settings           |
+
+---
+
+## Notes
+
+- Handle all operations within a coroutine scope.
+- Always call `acquire()` before use and `release()` after use to avoid leaks.
+- Commands like `SetInterval` and `UploadData` provide user feedback via dialogs in the UI layer.
+
  
