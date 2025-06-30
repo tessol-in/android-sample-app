@@ -28,7 +28,7 @@ repositories {
 
 ### Initialize sdk
 ```kotlin
-    TessolSdk.initialize()
+TessolSdk.initialize()
 ```
 
 ### Get an Instance
