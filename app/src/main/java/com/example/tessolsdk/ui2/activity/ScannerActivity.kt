@@ -36,7 +36,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.tessolsdk.ui2.activity.core.TessolComponentActivity
-import `in`.tessol.tamsys.sdk.data.model.BLEPeripheral
+import `in`.tessol.tamsys.v2.sdk.data.model.BLEPeripheral
+import `in`.tessol.tamsys.v2.sdk.scanner.TessolBLEScanner
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -68,7 +69,7 @@ class ScannerActivity : TessolComponentActivity() {
     private var isPaused = false
     private var startedSearching = false
     private var collectionJob: Job? = null
-    private val tessolBLEScanner: `in`.tessol.tamsys.sdk.api.TessolBLEScanner by lazy { `in`.tessol.tamsys.sdk.api.TessolBLEScanner.getInstance(this) }
+    private val tessolBLEScanner: TessolBLEScanner by lazy { TessolBLEScanner.getInstance(this) }
     private val devices: MutableStateFlow<List<BLEPeripheral>> = MutableStateFlow(emptyList())
     private val query: MutableStateFlow<String> = MutableStateFlow("")
 

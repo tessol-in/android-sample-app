@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.tessolsdk.ui2.activity.ScannerActivity.Companion.DEVICE
 import com.example.tessolsdk.ui2.activity.core.TessolComponentActivity
-import `in`.tessol.tamsys.sdk.data.model.TemperatureRecordV1
 import `in`.tessol.tamsys.v2.sdk.TessolCommandController
+import `in`.tessol.tamsys.v2.sdk.data.model.TemperatureRecordV1
 import `in`.tessol.tamsys.v2.sdk.model.SaveRecordResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
