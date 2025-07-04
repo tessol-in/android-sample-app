@@ -261,7 +261,7 @@ class CommandsActivityPublicSDK : TessolComponentActivity() {
                 withBusyState {
                     runCatching {
                         messageState.value = "uploading records"
-                        val uploadedRecordCount = commandController.uploadData().getOrDefault(defaultValue = 0)
+                        val uploadedRecordCount = commandController.uploadRecordsFromDevice().getOrDefault(defaultValue = 0)
                         messageState.value = "records are uploaded, count = $uploadedRecordCount"
                     }.onFailure {
                         messageState.value = "Something went wrong, Please try again later. \n ${it.message} \nPlease take a screen shot of this pop up"
