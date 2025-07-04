@@ -13,7 +13,7 @@ To include the Tessol SDK in your project, add the following dependency in your 
 
 ```groovy
 dependencies {
-    implementation "io.github.tessol-in:sdk:1.0.0-rc"
+    implementation "io.github.tessol-in:tamsys:1.0.1"
 }
 
 repositories {
@@ -27,8 +27,15 @@ repositories {
 ## Initialization
 
 ### Initialize sdk
+The entry point for initializing the Tessol SDK in your application.
+This object is designed to configure and prepare the SDK for use. You must call [initialize] before using any SDK functionality.
 ```kotlin
-TessolSdk.initialize()
+TessolSdk.initialize(
+    AwsConfigs(
+        deviceCertInputStream = context.assets.open("device-certificate.pem"),
+        privateKeyInputStream = context.assets.open("private_key_pkcs8.pem")
+    )
+)
 ```
 
 ### Get an Instance
@@ -95,7 +102,7 @@ val result = controller.saveRecordsFromDevice(deviceId, timeOut = 10000L)
 ### Upload Data to Server
 
 ```kotlin
-val result = controller.uploadData()
+val result = controller.uploadRecordsFromDevice()
 ```
 
 ---
