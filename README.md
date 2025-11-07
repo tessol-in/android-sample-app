@@ -101,10 +101,30 @@ val result = controller.saveRecordsFromDevice(deviceId, timeOut = 10000L)
 
 ### Upload Data to Server
 
+The SDK provides a simple method to upload locally stored records from connected devices to the server.
+
+### ✅ Basic Usage
+
+To upload all records from devices without any additional data:
+
 ```kotlin
 val result = controller.uploadRecordsFromDevice()
 ```
 
+
+### ✅ With Extra Data Usage
+
+To upload all records from devices with additional data:
+
+```kotlin
+val testExtraData = mapOf(
+    "batteryVoltage" to "1",
+    "longitude" to "76.6897041",
+    "latitude" to "30.7075106"
+)
+
+val uploadedRecordCount = controller.uploadRecordsFromDevice(extraData = testExtraData)
+```
 ---
 
 ## Configuration
