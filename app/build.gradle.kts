@@ -71,5 +71,5 @@ dependencies {
     implementation(libs.coroutines.android)
     //FIXME after this is released to maven central or google repo, use dependency to use sdk
     //implementation(fileTree("libs") { include("*.aar") })
-    implementation("io.github.tessol-in:tamsys:1.0.2")
+    implementation("in.tessol.tamsys:tamsys-sdk:1.0.0")
 }
