@@ -1,4 +1,4 @@
-package com.example.tessolsdk.ui2.extension
+package com.example.tessolsdk.utils
 
 import android.content.Context
 import android.content.pm.PackageManager

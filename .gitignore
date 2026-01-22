@@ -31,3 +31,4 @@ google-services.json
 /app/libs/
 /.kotlin/
 *.properties
+/app/src/main/assets/

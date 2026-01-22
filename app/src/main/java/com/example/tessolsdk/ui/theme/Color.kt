@@ -1,4 +1,4 @@
-package com.example.tessolsdk.ui2.theme
+package com.example.tessolsdk.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

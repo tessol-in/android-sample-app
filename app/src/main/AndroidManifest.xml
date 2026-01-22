@@ -41,18 +41,20 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".ui2.activity.HomeActivity"
+            android:name=".ui.screens.home.HomeActivity"
             android:exported="true"
-            android:theme="@style/Theme.TessolSDK">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.TessolSDK"
+            tools:ignore="DiscouragedApi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui2.activity.ScannerActivity" />
+        <activity android:name=".ui.screens.scanner.ScannerActivity" />
 <!--        <activity android:name=".ui2.activity.CommandsActivity" />-->
-        <activity android:name=".ui2.activity.CommandsActivityPublicSDK" />
+        <activity android:name=".ui.screens.commands.CommandsActivityPublicSDK" />
 
     </application>
 

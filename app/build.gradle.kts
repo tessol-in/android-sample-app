@@ -14,7 +14,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.tessolsdk"
+        applicationId = "com.sample.tessolsdk"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -45,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources {
@@ -69,7 +70,5 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
     implementation(libs.coroutines.android)
-    //FIXME after this is released to maven central or google repo, use dependency to use sdk
-    //implementation(fileTree("libs") { include("*.aar") })
-    implementation("in.tessol.tamsys:tamsys-sdk:1.0.1")
+    implementation("in.tessol.tamsys:tamsys-sdk:1.0.2-beta.1")
 }

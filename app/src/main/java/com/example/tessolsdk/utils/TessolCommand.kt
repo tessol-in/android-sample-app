@@ -1,7 +1,6 @@
-package com.example.tessolsdk.ui2.activity
+package com.example.tessolsdk.utils
 
-
-internal sealed class TessolCommand(val label: String) {
+sealed class TessolCommand(val label: String) {
     data object GetTime : TessolCommand("Get Time")
     data object SetTime : TessolCommand("Set Time")
     data object GetCusID : TessolCommand("Get Customer ID")

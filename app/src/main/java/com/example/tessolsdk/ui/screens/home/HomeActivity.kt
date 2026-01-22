@@ -1,4 +1,4 @@
-package com.example.tessolsdk.ui2.activity
+package com.example.tessolsdk.ui.screens.home
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
@@ -7,8 +7,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -37,15 +41,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.tessolsdk.R
-import com.example.tessolsdk.ui2.activity.core.Target
-import com.example.tessolsdk.ui2.activity.core.TessolComponentActivity
-import com.example.tessolsdk.ui2.activity.core.openActivity
-import com.example.tessolsdk.ui2.extension.hasPermission
-import com.example.tessolsdk.ui2.extension.toast
+import com.example.tessolsdk.ui.screens.scanner.ScannerActivity
+import com.example.tessolsdk.ui.screens.scanner.ScannerActivity.Companion.TARGET_EXTRA
+import com.example.tessolsdk.utils.hasPermission
+import com.example.tessolsdk.utils.toast
+import com.example.tessolsdk.ui.theme.TessolTheme
+import com.example.tessolsdk.utils.Target
 import androidx.compose.material3.AlertDialog as MaterialAlertDialog
 
-class HomeActivity : TessolComponentActivity() {
+class HomeActivity : ComponentActivity() {
     private val requestFeature: MutableState<Pair<Intent, String>?> = mutableStateOf(null)
     private val requestBLEFeatureTrigger: MutableState<Boolean> = mutableStateOf(false)
     private val requestActivityResultTrigger: MutableState<Pair<Intent, String>?> = mutableStateOf(null)
@@ -54,12 +60,25 @@ class HomeActivity : TessolComponentActivity() {
     private val dialogState: State<Dialog> = _dialogState
 
     fun openTarget() {
-        openActivity(ScannerActivity::class.java, Target.Command)
+        startActivity(Intent(this, ScannerActivity::class.java).apply {
+            putExtra(TARGET_EXTRA, Target.Command)
+        })
         finishAffinity()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            TessolTheme {
+                Surface(Modifier.fillMaxSize()) {
+                    ComposableContent()
+                }
+            }
+        }
+    }
+
     @Composable
-    override fun ComposableContent() {
+    private fun ComposableContent() {
         Content()
         Feature()
         Permission()
@@ -129,7 +148,7 @@ class HomeActivity : TessolComponentActivity() {
                 val message = requestActivityResultTrigger.value?.second
                 if (it.resultCode != RESULT_OK) {
                     message?.let { safeMessage -> toast(safeMessage) }
-                    finish()
+
                 }
             }
         )
@@ -255,7 +274,7 @@ sealed interface Dialog {
 @Composable
 fun OnLifecycleEvent(onEvent: (owner: LifecycleOwner, event: Lifecycle.Event) -> Unit) {
     val eventHandler = rememberUpdatedState(onEvent)
-    val lifecycleOwner = rememberUpdatedState(androidx.lifecycle.compose.LocalLifecycleOwner.current)
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle

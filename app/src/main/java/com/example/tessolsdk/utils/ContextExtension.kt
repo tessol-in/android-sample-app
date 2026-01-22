@@ -1,9 +1,9 @@
-package com.example.tessolsdk.ui2.activity.core
+package com.example.tessolsdk.utils
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
-import com.example.tessolsdk.ui2.activity.ScannerActivity.Companion.TARGET_EXTRA
+import com.example.tessolsdk.ui.screens.scanner.ScannerActivity.Companion.TARGET_EXTRA
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
