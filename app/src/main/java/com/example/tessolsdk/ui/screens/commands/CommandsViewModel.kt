@@ -1,5 +1,6 @@
 package com.example.tessolsdk.ui.screens.commands
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,11 +16,14 @@ import `in`.tessol.tamsys.v2.sdk.TessolCommandController
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.Date
+
 
 
 class CommandsViewModel(
@@ -84,6 +88,71 @@ class CommandsViewModel(
     }
 
 
+    private var periodicUploadJob: Job? = null
+    // --- UI states for Compose dialog --
+    var isUploading by mutableStateOf(false)
+        private set
+    var nextUploadInSeconds by mutableStateOf(0)
+        private set
+    var uploadMessage by mutableStateOf<String?>(null)
+        private set
+    fun startPeriodicUpload() {
+        stopPeriodicUpload() // cancel previous if any
+        isUploading = true
+
+        periodicUploadJob = viewModelScope.launch {
+            while (isActive) {
+                try {
+                    var countdown = 60 // seconds
+                    nextUploadInSeconds = 0
+                    // Execute periodic upload
+                    uploadMessage = "Uploading..."
+                    val uploadedCount = executePeriodicUpload(deviceId)
+                    uploadMessage = "Upload completed: $uploadedCount records"
+                    delay(5000L)
+                    uploadMessage = "Waiting..."
+                    while (countdown > 0 && isActive) {
+                        nextUploadInSeconds = countdown
+                        delay(1000L)
+                        countdown--
+                    }
+                } catch (e: Exception) {
+                    uploadMessage = "Error: ${e.message ?: "Unknown"}"
+                }
+            }
+        }
+    }
+
+    private suspend fun executePeriodicUpload(deviceId: String): Int {
+        var  message = "Reading system info"
+        Log.i("periodicTask", message)
+        val systemInfo = deviceController.getSystemInfo(deviceId).getOrThrow()
+        val dataPointCount = systemInfo.dataPointCount
+        message = "$dataPointCount records found, saving from device"
+        delay(5000L)
+        Log.i("periodicTask", message)
+        val savedCount = deviceController.saveRecordsFromDevice(deviceId, 10_000L).getOrThrow()
+        message = "$savedCount records saved, uploading to server"
+        Log.i("periodicTask", message)
+        val dummyExtraData = mapOf(
+            "batteryVoltage" to "1",
+            "longitude" to "76.6897041",
+            "latitude" to "30.7075106"
+        )
+
+        return deviceController.uploadRecordsFromDevice(dummyExtraData).getOrThrow()
+    }
+
+
+
+    fun stopPeriodicUpload() {
+        periodicUploadJob?.cancel()
+        periodicUploadJob = null
+        isUploading = false
+        nextUploadInSeconds = 0
+        uploadMessage = null
+    }
+
     fun executeCommand(command: TessolCommand) {
         val id = deviceId
         when (command) {
@@ -99,6 +168,10 @@ class CommandsViewModel(
             TessolCommand.SetInterval -> {
                 showIntervalDialog(true)
             }
+            TessolCommand.PeriodicUpload -> {
+                startPeriodicUpload()
+            }
+
 
             TessolCommand.GetTime -> {
                 run(

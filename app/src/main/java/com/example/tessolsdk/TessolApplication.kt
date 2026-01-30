@@ -14,6 +14,6 @@ class TessolApplication : MultiDexApplication() {
                 privateKeyInputStream =  assets.open("private_key_pkcs8.pem")
             )
         )
-        Thread.currentThread().setUncaughtExceptionHandler { t, e -> e.printStackTrace(); }
+        //Thread.currentThread().setUncaughtExceptionHandler { t, e -> e.printStackTrace(); }
     }
 }

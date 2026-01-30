@@ -27,6 +27,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -87,6 +88,13 @@ class CommandsActivityPublicSDK : ComponentActivity() {
         vm.message?.let { msg ->
             MessageDialog(message = msg) {
                 vm.showMessage(null)
+            }
+        }
+
+        if(vm.isUploading){
+            PeriodicUploadDialog(vm) {
+                // Dialog dismissed
+                vm.stopPeriodicUpload()
             }
         }
 
@@ -206,6 +214,48 @@ class CommandsActivityPublicSDK : ComponentActivity() {
     }
 
     @Composable
+    fun PeriodicUploadDialog(
+        viewModel: CommandsViewModel,
+        onDismiss: () -> Unit
+    ) {
+        AlertDialog(
+            onDismissRequest = { /* prevent dismiss */ },
+            title = { Text("Periodic Upload") },
+            text = {
+                Column {
+                    vm.uploadMessage?.let { Text(it) }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (vm.nextUploadInSeconds > 0){
+                        Text("Next upload in: ${vm.nextUploadInSeconds} seconds")
+                    }
+
+                    if (vm.uploadMessage == "Uploading..."){
+                        LinearProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(4.dp)
+                        )
+                    }else{
+                        LinearProgressIndicator(
+                            progress = (60 - vm.nextUploadInSeconds) / 60f,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                }
+            },
+            confirmButton = {
+                Button(onClick = {
+                    viewModel.stopPeriodicUpload()
+                    onDismiss()
+                }) {
+                    Text("Stop")
+                }
+            }
+        )
+    }
+
+    @Composable
     private fun CommandsComposable(
         commands: List<TessolCommand>,
         executeCommand: (TessolCommand) -> Unit
@@ -263,6 +313,7 @@ class CommandsActivityPublicSDK : ComponentActivity() {
             TessolCommand.GetCurrentTemperature,
             TessolCommand.GetStoredSensorData,
             TessolCommand.UploadData,
+            TessolCommand.PeriodicUpload,
             TessolCommand.FactoryReset
         )
     }
