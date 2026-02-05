@@ -14,4 +14,5 @@ sealed class TessolCommand(val label: String) {
     data object FactoryReset : TessolCommand("Factory Reset")
     data object PeriodicUpload : TessolCommand("Periodic Upload")
     data object SystemInfo : TessolCommand("System Info")
+    data object UploadCurrentTemperature : TessolCommand("Upload Current Temp")
 }

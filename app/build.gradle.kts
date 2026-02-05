@@ -70,5 +70,5 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
     implementation(libs.coroutines.android)
-    implementation("in.tessol.tamsys:tamsys-sdk:1.0.2-beta.2")
+    implementation("in.tessol.tamsys:tamsys-sdk:1.0.2-beta.3")
 }

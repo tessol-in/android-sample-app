@@ -314,6 +314,7 @@ class CommandsActivityPublicSDK : ComponentActivity() {
             TessolCommand.GetStoredSensorData,
             TessolCommand.UploadData,
             TessolCommand.PeriodicUpload,
+            TessolCommand.UploadCurrentTemperature,
             TessolCommand.FactoryReset
         )
     }

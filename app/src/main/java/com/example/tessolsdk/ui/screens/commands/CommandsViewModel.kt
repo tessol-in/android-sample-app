@@ -266,6 +266,20 @@ class CommandsViewModel(
                     }
                 )
             }
+            TessolCommand.UploadCurrentTemperature -> {
+                run(
+                    block = {
+                        val dummyExtraData = mapOf(
+                            "batteryVoltage" to "1",
+                            "longitude" to "76.6897041",
+                            "latitude" to "30.7075106"
+                        )
+                        deviceController.uploadCurrentTemperature(id,dummyExtraData) },
+                    onSuccess = { data ->
+                        message = data.toString()
+                    }
+                )
+            }
             else -> {
 
             }
