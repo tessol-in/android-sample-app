@@ -13,7 +13,7 @@ To include the Tessol SDK in your project, add the following dependency in your 
 
 ```groovy
 dependencies {
-    implementation "in.tessol.tamsys:tamsys-sdk:1.0.2-beta.2"
+    implementation "in.tessol.tamsys:tamsys-sdk:1.0.2-beta.4"
 }
 
 repositories {
@@ -94,11 +94,14 @@ val tempRecord = controller.getCurrentTemp(deviceId)
 ```
 
 ### Retrieve Stored Temperature Records
-
+## ❌ Deprecated API
 ```kotlin
 val result = controller.saveRecordsFromDevice(deviceId, timeOut = 10000L)
 ```
-
+## ✅ Updated API 
+```kotlin
+val result = controller.saveRecordsFromDeviceV2(deviceId, timeOut = 10000L)
+```
 ### Upload Data to Server
 
 The SDK provides a simple method to upload locally stored records from connected devices to the server.

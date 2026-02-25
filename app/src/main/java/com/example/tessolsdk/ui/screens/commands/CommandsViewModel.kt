@@ -240,7 +240,7 @@ class CommandsViewModel(
                                 val dataPointCount = result.dataPointCount
                                 message =  "$dataPointCount records in device, reading records"
                                 delay(1500L)
-                                deviceController.saveRecordsFromDevice(id,10000L)
+                                deviceController.saveRecordsFromDeviceV2(id,10000L)
                                     .onSuccess { savedRecords ->
                                         message = "$savedRecords records are saved out of $dataPointCount records"
                                     }
