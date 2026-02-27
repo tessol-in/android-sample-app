@@ -13,7 +13,7 @@ To include the Tessol SDK in your project, add the following dependency in your 
 
 ```groovy
 dependencies {
-    implementation "in.tessol.tamsys:tamsys-sdk:1.0.2-beta.4"
+    implementation "in.tessol.tamsys:tamsys-sdk:1.0.3"
 }
 
 repositories {

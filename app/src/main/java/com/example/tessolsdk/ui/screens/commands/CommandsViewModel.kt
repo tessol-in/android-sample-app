@@ -131,7 +131,7 @@ class CommandsViewModel(
         message = "$dataPointCount records found, saving from device"
         delay(5000L)
         Log.i("periodicTask", message)
-        val savedCount = deviceController.saveRecordsFromDevice(deviceId, 10_000L).getOrThrow()
+        val savedCount = deviceController.saveRecordsFromDeviceV2(deviceId, 10_000L).getOrThrow()
         message = "$savedCount records saved, uploading to server"
         Log.i("periodicTask", message)
         val dummyExtraData = mapOf(
